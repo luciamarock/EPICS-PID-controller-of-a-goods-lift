@@ -37,7 +37,7 @@ The system operates as follows:
 
 ## Video Recording
 
-A video recording of the CS-Studio screen and its interaction with the EPICS PID controller has been provided. You can view the video [here](https://www.youtube.com/watch?v=xbIodCaX7eo&ab_channel=LucianoCiamarone).
+A video recording of the CS-Studio screen and its interaction with the EPICS PID controller has been provided. You can view the video [here](https://youtu.be/fdcUvk8aKZ4).
 
 ## Source Files
 
