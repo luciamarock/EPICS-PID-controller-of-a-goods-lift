@@ -1,0 +1,103 @@
+record (ai, "myPID:e4") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/32 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:e3") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/28 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:e2") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/24 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:e1") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/20 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:e0") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/16 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:kd") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/12 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:ki") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/8 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:kp") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/4 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:St") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/0 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:y") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/36 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ai, "myPID:yout") {
+    field (DTYP, "S7plc")
+    field (INP, "@PLC1/40 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+    field (SCAN, "I/O Intr")
+}
+record (ao, "myPID:u4") {
+    field (DTYP, "S7plc")
+    field (OUT, "@PLC1/0 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+}
+record (ao, "myPID:SP") {
+    field (DTYP, "S7plc")
+    field (OUT, "@PLC1/4 T=FLOAT")
+    field (PREC, "2")
+    field (EGU, "m")
+}
+record (calcout, "myPID:calc") {
+    field (IVOA, "Don't drive outputs")
+    field (INPA, "myPID:St CP")
+    field (INPB, "myPID:kp CP")   
+    field (INPC, "myPID:ki CP")
+    field (INPD, "myPID:kd CP")
+    field (INPE, "myPID:e0 CP")
+    field (INPF, "myPID:e1 CP")
+    field (INPG, "myPID:e2 CP")
+    field (INPH, "myPID:e3 CP")
+    field (INPI, "myPID:e4 CP")
+    field (CALC, "B*I+C/(5*A)*(E+F+G+H+I)+(H-I)*D/A") 
+    field (OUT, "myPID:u4 CP")
+}

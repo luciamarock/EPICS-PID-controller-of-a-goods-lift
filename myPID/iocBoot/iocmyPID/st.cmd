@@ -1,0 +1,46 @@
+#!../../bin/linux-x86_64/myPID
+
+#- You may have to change myPID to something else
+#- everywhere it appears in this file
+
+< envPaths
+
+cd "${TOP}"
+
+## Register all support components
+
+# Load drivers and dbd files ==============
+dbLoadDatabase /home/codac_user/base-7.0.1.1/dbd/dlload.dbd
+#dbLoadDatabase /home/codac_user/base-7.0.1.1/dbd/system.dbd
+dbLoadDatabase "dbd/myPID.dbd"
+myPID_registerRecordDeviceDriver
+
+dlload "s7plc/lib/linux-x86_64/libs7plc.so"
+dbLoadDatabase /home/codac_user/myPID/s7plc/O.linux-x86_64/s7plc.dbd
+
+
+#myPID_registerRecordDeviceDriver pdbbase
+
+s7plc_registerRecordDeviceDriver
+
+# Configure the hardware
+#s7plcConfigure "PLCname","IPaddr",IPport,inSize,outSize, bigEndian,recvTimeout,sendIntervall
+
+s7plcConfigure "PLC1","192.168.129.20",2000,44,8,1,1000,1000
+
+## Load record instances
+#dbLoadTemplate "db/user.substitutions"
+dbLoadRecords "db/myPIDVersion.db"
+#dbLoadRecords "db/dbSubExample.db", "user=codac_user"
+
+#- Set this to see messages from mySub
+#var mySubDebug 1
+
+#- Run this to trace the stages of iocInit
+#traceIocInit
+
+cd "${TOP}/iocBoot/${IOC}"
+iocInit
+
+## Start any sequence programs
+#seq sncExample, "user=codac_user"

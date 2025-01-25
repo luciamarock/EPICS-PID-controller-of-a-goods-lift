@@ -1,0 +1,16 @@
+# Load drivers and dbd files ==============
+
+dlload /home/codac_user/modules/s7plc/lib/linux-x86_64/libs7plc.so
+dbLoadDatabase /home/codac_user/modules/s7plc/O.linux-x86_64/s7plc.dbd
+s7plc_registerRecordDeviceDriver
+
+# Configure the hardware
+#s7plcConfigure "PLCname","IPaddr",IPport,inSize,outSize, bigEndian,recvTimeout,sendIntervall
+
+s7plcConfigure "PLC1","192.168.129.20",2000,18,2,1,500,100
+
+# Load your record files ==================
+dbLoadDatabase("myPID.db")
+
+# start the EPICS IOC =====================
+iocInit

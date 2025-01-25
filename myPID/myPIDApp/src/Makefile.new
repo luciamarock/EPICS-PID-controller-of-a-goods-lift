@@ -1,0 +1,103 @@
+TOP=../..
+
+include $(TOP)/configure/CONFIG
+#----------------------------------------
+#  ADD MACRO DEFINITIONS BELOW HERE
+
+# Use typed rset structure (see 3.16.1 release notes)
+USR_CPPFLAGS += -DUSE_TYPED_RSET
+
+# xxxRecord.h will be created from xxxRecord.dbd
+DBDINC += xxxRecord
+
+# Install xxxSupport.dbd into <top>/dbd
+DBD += xxxSupport.dbd
+
+# Build an IOC support library
+LIBRARY_IOC += myPIDSupport
+
+# Compile and add code to the support library
+myPIDSupport_SRCS += xxxRecord.c
+myPIDSupport_SRCS += devXxxSoft.c
+
+# Link locally-provided code into the support library,
+# rather than directly into the IOC application, that
+# causes problems on Windows DLL builds
+myPIDSupport_SRCS += dbSubExample.c
+myPIDSupport_SRCS += devmyPIDVersion.c
+myPIDSupport_SRCS += myPIDHello.c
+myPIDSupport_SRCS += initTrace.c
+
+myPIDSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+# Auto-generate a header file containing a version string.
+# Version comes from the VCS if available, else date+time.
+GENVERSION = myPIDVersion.h
+# Macro name
+GENVERSIONMACRO = myPIDVERSION
+
+# Build the IOC application
+PROD_IOC = myPID
+
+# myPID.dbd will be created and installed
+DBD += myPID.dbd
+#AGGIUNTA
+#DBD += dlload.dbd
+myPID_DBD += dlload.dbd
+# myPID.dbd will include these files:
+myPID_DBD += base.dbd
+myPID_DBD += xxxSupport.dbd
+myPID_DBD += dbSubExample.dbd
+myPID_DBD += devmyPIDVersion.dbd
+myPID_DBD += myPIDHello.dbd
+myPID_DBD += initTrace.dbd
+
+# myPID_registerRecordDeviceDriver.cpp derives from myPID.dbd
+myPID_SRCS += myPID_registerRecordDeviceDriver.cpp
+
+# Build the main IOC entry point where needed
+myPID_SRCS_DEFAULT += myPIDMain.cpp
+myPID_SRCS_vxWorks += -nil-
+
+# Link in the code from our support library
+myPID_LIBS += myPIDSupport
+
+# To build SNL programs, SNCSEQ must be defined
+# in the <top>/configure/RELEASE file
+ifneq ($(SNCSEQ),)
+    # Build sncExample into myPIDSupport
+    sncExample_SNCFLAGS += +r
+    myPID_DBD += sncExample.dbd
+    # A .stt sequence program is *not* pre-processed:
+    myPIDSupport_SRCS += sncExample.stt
+    myPIDSupport_LIBS += seq pv
+    myPID_LIBS += seq pv
+
+    # Build sncProgram as a standalone program
+    PROD_HOST += sncProgram
+    sncProgram_SNCFLAGS += +m
+    # A .st sequence program *is* pre-processed:
+    sncProgram_SRCS += sncProgram.st
+    sncProgram_LIBS += seq pv
+    sncProgram_LIBS += $(EPICS_BASE_HOST_LIBS)
+endif
+
+# Link QSRV (pvAccess Server) if available
+ifdef EPICS_QSRV_MAJOR_VERSION
+    myPID_LIBS += qsrv
+    myPID_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+    myPID_DBD += PVAServerRegister.dbd
+    myPID_DBD += qsrv.dbd
+endif
+
+# Finally link IOC to the EPICS Base libraries
+myPID_LIBS += ca Com dbCore pvAccess   pvData Cap5  pvAccessIOC pvAccessCA  pvaClient pvDatabase dbRecStd 
+#myPID_LIBS += -L/home/codac_user/base-7.0.1.1/lib/linux-x86_64 -lca -lCom -ldbCore -lpvAccess   -lpvData -lCap5  -lpvAccessIOC  -lbnt -lpvAccessCA  -lpvaClient -lpvDatabase.so -ldbRecStd.so -lqsrv.so
+ 
+
+include $(TOP)/configure/RULES
+#----------------------------------------
+#  ADD EXTRA GNUMAKE RULES BELOW HERE
+
+# Explicit dependency needed for generated header file
+devmyPIDVersion$(DEP): $(COMMON_DIR)/$(GENVERSION)

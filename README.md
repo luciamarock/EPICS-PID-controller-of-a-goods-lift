@@ -5,7 +5,7 @@ This repository contains an EPICS PID controller implementation for a goods lift
 
 ## Repository Contents
 
-- `myPID.tgz`: EPICS project for the goods lift (EPICS version: 7.0.1)
+- `myPID`: EPICS project for the goods lift (EPICS version: 7.0.1)
 - `PID.opi`: CSStudio Operator Interface (HMI) file
 - `PID_EPICS_v4_20190718_1622.zap15`: TIA Portal PLC project with the implemented physical model
 
@@ -34,6 +34,39 @@ The system operates as follows:
 1. PLC reads the current position (`Y`) from the field, retrieved from the internal blocks containing the physical model.
 2. A user requests a Set Point (`SP`) using the CODAC CS-Studio user interface.
 3. EPICS calculates the required force to be sent to the engine to achieve the desired position. This calculation is performed through a PID control loop, taking inputs `Y` and `SP`.
+
+
+## How to Use
+
+### Setup Requirements
+Before starting, ensure you have the following:
+- **EPICS** version 7.0.1
+- **CS-Studio (Control System Studio)**
+- **SIEMENS PLC 1516** with the provided TIA Portal project
+
+### Starting the IOC
+1. Navigate to the `myPID/iocBoot/iocmyPID` directory:
+   ```bash
+   cd myPID/iocBoot/iocmyPID
+   ```
+2. Start the IOC by running:
+   ```bash
+   ../../bin/linux-x86_64/myPID st.cmd
+   ```
+   Alternatively, make the `st.cmd` script executable and run it:
+   ```bash
+   chmod +x st.cmd
+   ./st.cmd
+   ```
+
+### Running the Interface
+1. Launch **CS-Studio**.
+2. Open the provided `PID.opi` file.
+3. Use the interface to:
+   - **Set the desired position (SP)**
+   - **Monitor the current position (Y)**
+   - **View the calculated force being applied**
+   - **Adjust PID parameters if needed**
 
 ## Video Recording
 
